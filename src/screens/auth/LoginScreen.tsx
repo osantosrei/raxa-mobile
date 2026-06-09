@@ -17,8 +17,10 @@ import { Button } from '../../components/ui/Button';
 import { ErrorMessage } from '../../components/ui/ErrorMessage';
 import { Input } from '../../components/ui/Input';
 import { useAuth } from '../../store/authStore';
+import { consumePendingInvite } from '../../store/pendingInvite';
 import { colors, radii, spacing, typography } from '../../theme';
-import type { AuthScreenProps } from '../../navigation/types';
+import type { AuthScreenProps, RootStackParamList } from '../../navigation/types';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 const loginSchema = z.object({
   email: z.string().trim().email('E-mail invalido'),
@@ -43,6 +45,11 @@ export function LoginScreen({ navigation }: AuthScreenProps<'Login'>) {
     try {
       const response = await authApi.login(values);
       await signIn(response);
+      const pendingInvite = await consumePendingInvite();
+      const rootNavigation = navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();
+      if (pendingInvite) {
+        rootNavigation?.navigate('InvitePreview', { code: pendingInvite });
+      }
     } catch (error) {
       setError('root', {
         message: getErrorMessage(error, 'Erro ao fazer login. Tente novamente.'),

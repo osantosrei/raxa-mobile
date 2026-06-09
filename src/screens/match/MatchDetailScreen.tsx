@@ -1,6 +1,7 @@
 import { RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { InviteShareButton } from '../../components/match/InviteShareButton';
 import { MatchActions } from '../../components/match/MatchActions';
 import { PlayerListItem } from '../../components/match/PlayerListItem';
 import { Card } from '../../components/ui/Card';
@@ -103,13 +104,7 @@ export function MatchDetailScreen({ route }: Props) {
 
         {isCreator && match.inviteCode ? (
           <Card>
-            <Text style={styles.sectionTitle}>Convite</Text>
-            <Text style={styles.mutedText}>
-              Codigo gerado automaticamente. Copiar e compartilhar entram na Etapa 5.
-            </Text>
-            <Text selectable style={styles.inviteCode}>
-              {match.inviteCode}
-            </Text>
+            <InviteShareButton inviteCode={match.inviteCode} />
           </Card>
         ) : null}
 
@@ -217,17 +212,5 @@ const styles = StyleSheet.create({
   },
   playersList: {
     gap: spacing.xs,
-  },
-  mutedText: {
-    color: colors.textMuted,
-    fontSize: typography.sizes.md,
-    lineHeight: 22,
-    marginTop: spacing.sm,
-  },
-  inviteCode: {
-    color: colors.primary,
-    fontSize: typography.sizes.md,
-    fontWeight: typography.weights.black,
-    marginTop: spacing.md,
   },
 });
