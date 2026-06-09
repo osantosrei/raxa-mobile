@@ -1,0 +1,148 @@
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+import { Card } from '../../components/ui/Card';
+import { EmptyState } from '../../components/ui/EmptyState';
+import { ErrorMessage } from '../../components/ui/ErrorMessage';
+import { InfoRow } from '../../components/ui/InfoRow';
+import { LoadingSpinner } from '../../components/ui/LoadingSpinner';
+import { StatusBadge } from '../../components/ui/StatusBadge';
+import { useMatchDetail } from '../../hooks/useMatches';
+import type { RootStackParamList } from '../../navigation/types';
+import { useAuth } from '../../store/authStore';
+import { colors, spacing, typography } from '../../theme';
+import { formatMatchDate } from '../../utils/date';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+
+type Props = NativeStackScreenProps<RootStackParamList, 'MatchDetail'>;
+
+export function MatchDetailScreen({ route }: Props) {
+  const { matchId } = route.params;
+  const { user } = useAuth();
+  const { data: match, isError, isLoading, refetch } = useMatchDetail(matchId);
+
+  if (isLoading) {
+    return <LoadingSpinner label="Carregando detalhes" />;
+  }
+
+  if (isError || !match) {
+    return (
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.content}>
+          <ErrorMessage
+            message="Nao foi possivel carregar esta partida."
+            onRetry={() => {
+              refetch();
+            }}
+          />
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  const spotsLeft = Math.max(match.maxPlayers - match.currentPlayers, 0);
+  const isCreator = match.creator.id === user?.id;
+
+  return (
+    <SafeAreaView style={styles.safeArea}>
+      <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
+        <View style={styles.header}>
+          <View style={styles.titleGroup}>
+            <Text style={styles.title}>{match.title}</Text>
+            <Text style={styles.creator}>Criada por {match.creator.name}</Text>
+          </View>
+          <StatusBadge status={match.status} />
+        </View>
+
+        <Card>
+          <View style={styles.infoStack}>
+            <InfoRow icon="location" text={match.location} />
+            <InfoRow icon="calendar" text={formatMatchDate(match.scheduledAt)} />
+            <InfoRow
+              icon="people"
+              text={`${match.currentPlayers} de ${match.maxPlayers} confirmados`}
+            />
+          </View>
+          {match.status === 'OPEN' && spotsLeft > 0 ? (
+            <Text style={styles.spots}>{spotsLeft} vagas disponiveis</Text>
+          ) : null}
+        </Card>
+
+        {isCreator && match.inviteCode ? (
+          <Card>
+            <Text style={styles.sectionTitle}>Convite</Text>
+            <Text style={styles.mutedText}>
+              Codigo gerado automaticamente. Copiar e compartilhar entram na Etapa 5.
+            </Text>
+            <Text selectable style={styles.inviteCode}>
+              {match.inviteCode}
+            </Text>
+          </Card>
+        ) : null}
+
+        <EmptyState
+          icon="people"
+          title="Participantes na Etapa 4"
+          description="A lista de jogadores confirmados e as acoes de entrar, sair e cancelar serao conectadas na proxima etapa."
+        />
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: colors.background,
+  },
+  content: {
+    gap: spacing.md,
+    padding: spacing.lg,
+    paddingBottom: spacing.xxl,
+  },
+  header: {
+    alignItems: 'flex-start',
+    flexDirection: 'row',
+    gap: spacing.md,
+    justifyContent: 'space-between',
+  },
+  titleGroup: {
+    flex: 1,
+    gap: spacing.xs,
+  },
+  title: {
+    color: colors.text,
+    fontSize: typography.sizes.xxl,
+    fontWeight: typography.weights.black,
+  },
+  creator: {
+    color: colors.textMuted,
+    fontSize: typography.sizes.sm,
+  },
+  infoStack: {
+    gap: spacing.md,
+  },
+  spots: {
+    color: colors.success,
+    fontSize: typography.sizes.md,
+    fontWeight: typography.weights.black,
+    marginTop: spacing.md,
+  },
+  sectionTitle: {
+    color: colors.text,
+    fontSize: typography.sizes.lg,
+    fontWeight: typography.weights.black,
+  },
+  mutedText: {
+    color: colors.textMuted,
+    fontSize: typography.sizes.md,
+    lineHeight: 22,
+    marginTop: spacing.sm,
+  },
+  inviteCode: {
+    color: colors.primary,
+    fontSize: typography.sizes.md,
+    fontWeight: typography.weights.black,
+    marginTop: spacing.md,
+  },
+});
