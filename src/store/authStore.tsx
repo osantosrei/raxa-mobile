@@ -1,7 +1,7 @@
 import * as SecureStore from 'expo-secure-store';
 import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
-import { TOKEN_KEY, USER_KEY } from '../api/client';
+import { setUnauthorizedHandler, TOKEN_KEY, USER_KEY } from '../api/client';
 import type { AuthResponse, UserResponse } from '../types/api';
 
 interface AuthState {
@@ -79,6 +79,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const updateUser = useCallback(async (nextUser: UserResponse) => {
     await SecureStore.setItemAsync(USER_KEY, JSON.stringify(nextUser));
     setUser(nextUser);
+  }, []);
+
+  useEffect(() => {
+    setUnauthorizedHandler(() => {
+      setToken(null);
+      setUser(null);
+    });
+
+    return () => {
+      setUnauthorizedHandler(null);
+    };
   }, []);
 
   const value = useMemo(

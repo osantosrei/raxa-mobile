@@ -41,14 +41,20 @@ Edite `EXPO_PUBLIC_API_URL` conforme o ambiente:
 npx expo start
 ```
 
-## Etapa atual
+## Etapas implementadas
 
-Esta entrega implementa a Etapa 1: setup, estrutura base, contratos TypeScript da API, tokens de tema e componentes reutilizaveis do design system. O app ainda nao faz chamadas ao backend; a tela inicial e um preview tecnico dos componentes.
+- Etapa 1: setup Expo, estrutura base, tokens de tema e design system.
+- Etapa 2: navegacao, login, cadastro, JWT persistido com SecureStore e logout.
+- Etapa 3: listagem, criacao e detalhe de partidas com React Query.
+- Etapa 4: participantes confirmados e acoes de entrar, sair e cancelar partida.
+- Etapa 5: convites, deep linking, preview publico, copiar link e compartilhamento nativo.
+- Etapa 6: perfil com visualizacao, edicao de nome/telefone, tratamento de 401 e README.
 
 ## Decisoes tecnicas
 
-- O estado global ainda nao foi introduzido; autenticacao ficara para a Etapa 2.
-- `App.tsx` ja envolve o app com `SafeAreaProvider` e `QueryClientProvider` para preparar as proximas etapas.
+- Estado global e usado apenas para autenticacao, via Context + SecureStore.
+- `App.tsx` envolve o app com `SafeAreaProvider`, `QueryClientProvider` e `AuthProvider`.
 - Os tipos em `src/types/api.ts` espelham os DTOs documentados pelo backend.
 - O `Input` usa `TextInputProps`, sem `any`.
-- Compartilhamento de convites sera tratado na Etapa 5; `expo-sharing` nao foi instalado nesta base.
+- Compartilhamento de convites usa `Share` nativo do React Native para texto/link; `expo-sharing` nao foi instalado.
+- Erros 401 limpam SecureStore e sessao em memoria para retornar ao fluxo de autenticacao.
