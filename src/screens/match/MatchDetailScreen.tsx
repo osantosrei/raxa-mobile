@@ -1,6 +1,8 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { MatchActions } from '../../components/match/MatchActions';
+import { PlayerListItem } from '../../components/match/PlayerListItem';
 import { Card } from '../../components/ui/Card';
 import { EmptyState } from '../../components/ui/EmptyState';
 import { ErrorMessage } from '../../components/ui/ErrorMessage';
@@ -8,6 +10,7 @@ import { InfoRow } from '../../components/ui/InfoRow';
 import { LoadingSpinner } from '../../components/ui/LoadingSpinner';
 import { StatusBadge } from '../../components/ui/StatusBadge';
 import { useMatchDetail } from '../../hooks/useMatches';
+import { usePlayers } from '../../hooks/usePlayers';
 import type { RootStackParamList } from '../../navigation/types';
 import { useAuth } from '../../store/authStore';
 import { colors, spacing, typography } from '../../theme';
@@ -19,7 +22,20 @@ type Props = NativeStackScreenProps<RootStackParamList, 'MatchDetail'>;
 export function MatchDetailScreen({ route }: Props) {
   const { matchId } = route.params;
   const { user } = useAuth();
-  const { data: match, isError, isLoading, refetch } = useMatchDetail(matchId);
+  const {
+    data: match,
+    isError,
+    isLoading,
+    isRefetching: isRefetchingMatch,
+    refetch: refetchMatch,
+  } = useMatchDetail(matchId);
+  const {
+    data: players = [],
+    isError: isPlayersError,
+    isLoading: isLoadingPlayers,
+    isRefetching: isRefetchingPlayers,
+    refetch: refetchPlayers,
+  } = usePlayers(matchId);
 
   if (isLoading) {
     return <LoadingSpinner label="Carregando detalhes" />;
@@ -32,7 +48,7 @@ export function MatchDetailScreen({ route }: Props) {
           <ErrorMessage
             message="Nao foi possivel carregar esta partida."
             onRetry={() => {
-              refetch();
+              refetchMatch();
             }}
           />
         </View>
@@ -42,10 +58,27 @@ export function MatchDetailScreen({ route }: Props) {
 
   const spotsLeft = Math.max(match.maxPlayers - match.currentPlayers, 0);
   const isCreator = match.creator.id === user?.id;
+  const isParticipant = players.some((player) => player.userId === user?.id);
+  const isRefreshing = isRefetchingMatch || isRefetchingPlayers;
+
+  function refetchScreen() {
+    refetchMatch();
+    refetchPlayers();
+  }
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        contentContainerStyle={styles.content}
+        refreshControl={
+          <RefreshControl
+            onRefresh={refetchScreen}
+            refreshing={isRefreshing}
+            tintColor={colors.primary}
+          />
+        }
+        showsVerticalScrollIndicator={false}
+      >
         <View style={styles.header}>
           <View style={styles.titleGroup}>
             <Text style={styles.title}>{match.title}</Text>
@@ -80,10 +113,47 @@ export function MatchDetailScreen({ route }: Props) {
           </Card>
         ) : null}
 
-        <EmptyState
-          icon="people"
-          title="Participantes na Etapa 4"
-          description="A lista de jogadores confirmados e as acoes de entrar, sair e cancelar serao conectadas na proxima etapa."
+        <Card>
+          <View style={styles.sectionHeader}>
+            <Text style={styles.sectionTitle}>Confirmados</Text>
+            <Text style={styles.counter}>
+              {match.currentPlayers}/{match.maxPlayers}
+            </Text>
+          </View>
+
+          {isLoadingPlayers ? <LoadingSpinner label="Carregando jogadores" inline /> : null}
+
+          {isPlayersError ? (
+            <ErrorMessage
+              message="Nao foi possivel carregar os participantes."
+              onRetry={() => {
+                refetchPlayers();
+              }}
+            />
+          ) : null}
+
+          {!isLoadingPlayers && !isPlayersError && players.length === 0 ? (
+            <EmptyState
+              icon="people"
+              title="Sem confirmados"
+              description="Quando alguem entrar na partida, aparecera aqui."
+            />
+          ) : null}
+
+          {!isPlayersError && players.length > 0 ? (
+            <View style={styles.playersList}>
+              {players.map((player) => (
+                <PlayerListItem key={player.userId} player={player} />
+              ))}
+            </View>
+          ) : null}
+        </Card>
+
+        <MatchActions
+          isCreator={isCreator}
+          isParticipant={isParticipant}
+          match={match}
+          onActionComplete={refetchScreen}
         />
       </ScrollView>
     </SafeAreaView>
@@ -132,6 +202,21 @@ const styles = StyleSheet.create({
     color: colors.text,
     fontSize: typography.sizes.lg,
     fontWeight: typography.weights.black,
+  },
+  sectionHeader: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: spacing.md,
+    justifyContent: 'space-between',
+    marginBottom: spacing.sm,
+  },
+  counter: {
+    color: colors.primary,
+    fontSize: typography.sizes.md,
+    fontWeight: typography.weights.black,
+  },
+  playersList: {
+    gap: spacing.xs,
   },
   mutedText: {
     color: colors.textMuted,
