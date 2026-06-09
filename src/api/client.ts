@@ -7,6 +7,12 @@ import type { AppError } from './errors';
 export const TOKEN_KEY = 'raxa_token';
 export const USER_KEY = 'raxa_user';
 
+let unauthorizedHandler: (() => void | Promise<void>) | null = null;
+
+export function setUnauthorizedHandler(handler: (() => void | Promise<void>) | null) {
+  unauthorizedHandler = handler;
+}
+
 export const apiClient = axios.create({
   baseURL: process.env.EXPO_PUBLIC_API_URL ?? 'http://localhost:8080/api/v1',
   headers: { 'Content-Type': 'application/json' },
@@ -37,6 +43,7 @@ apiClient.interceptors.response.use(
     if (error.response.status === 401) {
       await SecureStore.deleteItemAsync(TOKEN_KEY);
       await SecureStore.deleteItemAsync(USER_KEY);
+      await unauthorizedHandler?.();
     }
 
     return Promise.reject(error.response.data);

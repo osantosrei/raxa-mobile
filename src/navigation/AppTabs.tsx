@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { CreateMatchScreen } from '../screens/match/CreateMatchScreen';
 import { MatchListScreen } from '../screens/match/MatchListScreen';
-import { ProfilePlaceholderScreen } from '../screens/profile/ProfilePlaceholderScreen';
+import { ProfileScreen } from '../screens/profile/ProfileScreen';
 import { colors, typography } from '../theme';
 import type { AppTabsParamList } from './types';
 
@@ -44,7 +44,7 @@ export function AppTabs() {
       />
       <Tabs.Screen
         name="Profile"
-        component={ProfilePlaceholderScreen}
+        component={ProfileScreen}
         options={{
           title: 'Perfil',
           tabBarIcon: ({ color, size }) => <Ionicons color={color} name="person" size={size} />,
