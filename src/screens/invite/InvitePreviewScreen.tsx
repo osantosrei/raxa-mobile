@@ -40,7 +40,7 @@ export function InvitePreviewScreen({ navigation, route }: Props) {
       const match = await joinViaInvite.mutateAsync(code);
       navigation.replace('MatchDetail', { matchId: match.id });
     } catch (joinError) {
-      setError(getErrorMessage(joinError, 'Nao foi possivel entrar na partida.'));
+      setError(getErrorMessage(joinError, 'Não foi possível entrar na partida.'));
     }
   }
 
@@ -54,8 +54,8 @@ export function InvitePreviewScreen({ navigation, route }: Props) {
         <View style={styles.content}>
           <EmptyState
             icon="link"
-            title="Convite invalido"
-            description="Este convite nao existe, expirou ou foi desativado."
+            title="Convite inválido"
+            description="Este convite não existe, expirou ou foi desativado."
             actionLabel="Tentar novamente"
             onAction={() => {
               refetch();
@@ -74,7 +74,7 @@ export function InvitePreviewScreen({ navigation, route }: Props) {
     <SafeAreaView style={styles.safeArea}>
       <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
-          <Text style={styles.eyebrow}>Voce foi convidado para</Text>
+          <Text style={styles.eyebrow}>Você foi convidado para</Text>
           <Text style={styles.title}>{preview.title}</Text>
           <StatusBadge status={preview.status} />
         </View>
@@ -99,7 +99,7 @@ export function InvitePreviewScreen({ navigation, route }: Props) {
 
         <Button
           disabled={isUnavailable}
-          label={isFull ? 'Partida cheia' : 'Confirmar presenca'}
+          label={isFull ? 'Partida cheia' : 'Confirmar presença'}
           loading={joinViaInvite.isPending}
           onPress={handleJoin}
           fullWidth

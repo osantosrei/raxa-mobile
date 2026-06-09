@@ -30,7 +30,7 @@ export function InviteShareButton({ inviteCode }: InviteShareButtonProps) {
 
   async function shareInvite() {
     await Share.share({
-      message: `Bora jogar? Confirme sua presenca no Raxa: ${inviteLink}`,
+      message: `Bora jogar? Confirme sua presença no Raxa: ${inviteLink}`,
     });
   }
 

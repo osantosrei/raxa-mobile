@@ -22,7 +22,7 @@ export function MatchListScreen({ navigation }: AppTabScreenProps<'Home'>) {
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.content}>
           <ErrorMessage
-            message="Nao foi possivel carregar as partidas."
+            message="Não foi possível carregar as partidas."
             onRetry={() => {
               refetch();
             }}
