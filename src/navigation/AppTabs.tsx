@@ -1,8 +1,8 @@
 import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import { CreatePlaceholderScreen } from '../screens/match/CreatePlaceholderScreen';
-import { MatchListPlaceholderScreen } from '../screens/match/MatchListPlaceholderScreen';
+import { CreateMatchScreen } from '../screens/match/CreateMatchScreen';
+import { MatchListScreen } from '../screens/match/MatchListScreen';
 import { ProfilePlaceholderScreen } from '../screens/profile/ProfilePlaceholderScreen';
 import { colors, typography } from '../theme';
 import type { AppTabsParamList } from './types';
@@ -28,7 +28,7 @@ export function AppTabs() {
     >
       <Tabs.Screen
         name="Home"
-        component={MatchListPlaceholderScreen}
+        component={MatchListScreen}
         options={{
           title: 'Home',
           tabBarIcon: ({ color, size }) => <Ionicons color={color} name="football" size={size} />,
@@ -36,7 +36,7 @@ export function AppTabs() {
       />
       <Tabs.Screen
         name="Create"
-        component={CreatePlaceholderScreen}
+        component={CreateMatchScreen}
         options={{
           title: 'Criar',
           tabBarIcon: ({ color, size }) => <Ionicons color={color} name="add-circle" size={size} />,
