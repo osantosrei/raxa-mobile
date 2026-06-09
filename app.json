@@ -1,0 +1,41 @@
+{
+  "expo": {
+    "name": "Raxa",
+    "slug": "raxa-mobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "raxa",
+    "userInterfaceStyle": "dark",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.raxa.app"
+    },
+    "android": {
+      "package": "com.raxa.app",
+      "adaptiveIcon": {
+        "backgroundColor": "#121212"
+      },
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "raxa"
+            }
+          ],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
+        }
+      ]
+    },
+    "web": {
+      "bundler": "metro"
+    }
+  }
+}

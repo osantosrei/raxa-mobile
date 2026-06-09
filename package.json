@@ -1,0 +1,38 @@
+{
+  "name": "raxa-mobile",
+  "version": "1.0.0",
+  "private": true,
+  "main": "expo/AppEntry",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@expo/vector-icons": "15.1.1",
+    "@hookform/resolvers": "5.4.0",
+    "@react-navigation/bottom-tabs": "6.6.1",
+    "@react-navigation/native": "6.1.18",
+    "@react-navigation/native-stack": "6.11.0",
+    "@tanstack/react-query": "5.101.0",
+    "date-fns": "4.4.0",
+    "expo": "~56.0.9",
+    "expo-clipboard": "~56.0.4",
+    "expo-linking": "~56.0.13",
+    "expo-secure-store": "~56.0.4",
+    "expo-status-bar": "~56.0.4",
+    "react": "19.2.3",
+    "react-hook-form": "7.78.0",
+    "react-native": "0.85.3",
+    "react-native-safe-area-context": "~5.7.0",
+    "react-native-screens": "4.25.2",
+    "zod": "4.4.3"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.17",
+    "babel-preset-expo": "~56.0.14",
+    "typescript": "6.0.3"
+  }
+}
