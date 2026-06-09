@@ -24,6 +24,7 @@ export function RootNavigator() {
     <NavigationContainer<RootStackParamList> linking={linkingConfig}>
       <Stack.Navigator
         screenOptions={{
+          animation: 'slide_from_right',
           contentStyle: { backgroundColor: colors.background },
           headerShown: false,
         }}

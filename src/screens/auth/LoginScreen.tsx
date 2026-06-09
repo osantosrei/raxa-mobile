@@ -23,8 +23,8 @@ import type { AuthScreenProps, RootStackParamList } from '../../navigation/types
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 const loginSchema = z.object({
-  email: z.string().trim().email('E-mail invalido'),
-  password: z.string().min(1, 'Senha obrigatoria'),
+  email: z.string().trim().email('E-mail inválido'),
+  password: z.string().min(1, 'Senha obrigatória'),
 });
 
 type LoginFormValues = z.infer<typeof loginSchema>;
@@ -62,11 +62,14 @@ export function LoginScreen({ navigation }: AuthScreenProps<'Login'>) {
   return (
     <SafeAreaView style={styles.safeArea}>
       <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 24}
         style={styles.keyboard}
       >
         <ScrollView
           contentContainerStyle={styles.content}
+          automaticallyAdjustKeyboardInsets
+          keyboardDismissMode="interactive"
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
@@ -75,7 +78,7 @@ export function LoginScreen({ navigation }: AuthScreenProps<'Login'>) {
               <Text style={styles.logoMarkText}>R</Text>
             </View>
             <Text style={styles.logo}>Raxa</Text>
-            <Text style={styles.subtitle}>Entre para confirmar sua proxima pelada.</Text>
+            <Text style={styles.subtitle}>Entre para confirmar sua próxima pelada.</Text>
           </View>
 
           <View style={styles.formCard}>
@@ -93,7 +96,7 @@ export function LoginScreen({ navigation }: AuthScreenProps<'Login'>) {
                   label="E-mail"
                   onBlur={onBlur}
                   onChangeText={onChange}
-                  placeholder="voce@email.com"
+                  placeholder="email@exemplo.com"
                   textContentType="emailAddress"
                   value={value}
                 />

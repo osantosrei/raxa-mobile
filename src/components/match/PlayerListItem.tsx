@@ -17,7 +17,7 @@ function formatJoinedAt(value: string) {
     return 'Confirmado';
   }
 
-  return `Confirmou em ${format(date, "dd/MM 'as' HH:mm", { locale: ptBR })}`;
+  return `Confirmou em ${format(date, "dd/MM 'às' HH:mm", { locale: ptBR })}`;
 }
 
 export function PlayerListItem({ player }: PlayerListItemProps) {

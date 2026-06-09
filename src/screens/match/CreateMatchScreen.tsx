@@ -24,15 +24,15 @@ import { parseLocalDateTime, toApiDateTime, toDateInputValue, toTimeInputValue }
 
 const createMatchSchema = z
   .object({
-    title: z.string().trim().min(3, 'Titulo deve ter ao menos 3 caracteres').max(100),
-    location: z.string().trim().min(3, 'Local obrigatorio').max(255),
+    title: z.string().trim().min(3, 'Título deve ter ao menos 3 caracteres').max(100),
+    location: z.string().trim().min(3, 'Local obrigatório').max(255),
     date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Use o formato AAAA-MM-DD'),
     time: z.string().regex(/^\d{2}:\d{2}$/, 'Use o formato HH:mm'),
     maxPlayers: z.coerce
-      .number({ message: 'Numero invalido' })
-      .int('Informe um numero inteiro')
-      .min(2, 'Minimo 2 jogadores')
-      .max(100, 'Maximo 100 jogadores'),
+      .number({ message: 'Número inválido' })
+      .int('Informe um número inteiro')
+      .min(2, 'Mínimo 2 jogadores')
+      .max(100, 'Máximo 100 jogadores'),
   })
   .superRefine((values, context) => {
     const scheduledAt = parseLocalDateTime(values.date, values.time);
@@ -89,18 +89,21 @@ export function CreateMatchScreen({ navigation }: AppTabScreenProps<'Create'>) {
   return (
     <SafeAreaView style={styles.safeArea}>
       <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 24}
         style={styles.keyboard}
       >
         <ScrollView
           contentContainerStyle={styles.content}
+          automaticallyAdjustKeyboardInsets
+          keyboardDismissMode="interactive"
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
           <View style={styles.header}>
             <Text style={styles.title}>Criar partida</Text>
             <Text style={styles.subtitle}>
-              Defina local, horario e limite de jogadores para organizar o proximo raxa.
+              Defina local, horário e limite de jogadores para organizar o próximo raxa.
             </Text>
           </View>
 
@@ -111,7 +114,7 @@ export function CreateMatchScreen({ navigation }: AppTabScreenProps<'Create'>) {
               render={({ field: { onBlur, onChange, value } }) => (
                 <Input
                   error={errors.title?.message}
-                  label="Titulo"
+                  label="Título"
                   onBlur={onBlur}
                   onChangeText={onChange}
                   placeholder="Ex: Raxa de quinta"
@@ -157,7 +160,7 @@ export function CreateMatchScreen({ navigation }: AppTabScreenProps<'Create'>) {
                   <Input
                     error={errors.time?.message}
                     keyboardType="numbers-and-punctuation"
-                    label="Horario"
+                    label="Horário"
                     onBlur={onBlur}
                     onChangeText={onChange}
                     placeholder="HH:mm"

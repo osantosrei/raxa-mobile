@@ -24,7 +24,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 const registerSchema = z.object({
   name: z.string().trim().min(2, 'Nome deve ter ao menos 2 caracteres'),
-  email: z.string().trim().email('E-mail invalido'),
+  email: z.string().trim().email('E-mail inválido'),
   password: z.string().min(8, 'Senha deve ter ao menos 8 caracteres'),
   phone: z.string().trim().optional(),
 });
@@ -67,18 +67,21 @@ export function RegisterScreen({ navigation }: AuthScreenProps<'Register'>) {
   return (
     <SafeAreaView style={styles.safeArea}>
       <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 24}
         style={styles.keyboard}
       >
         <ScrollView
           contentContainerStyle={styles.content}
+          automaticallyAdjustKeyboardInsets
+          keyboardDismissMode="interactive"
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
           <View style={styles.header}>
             <Text style={styles.title}>Criar conta</Text>
             <Text style={styles.subtitle}>
-              Cadastre-se para criar partidas e confirmar presenca nos convites.
+              Cadastre-se para criar partidas e confirmar presença nos convites.
             </Text>
           </View>
 
@@ -113,7 +116,7 @@ export function RegisterScreen({ navigation }: AuthScreenProps<'Register'>) {
                   label="E-mail"
                   onBlur={onBlur}
                   onChangeText={onChange}
-                  placeholder="voce@email.com"
+                  placeholder="email@exemplo.com"
                   textContentType="emailAddress"
                   value={value}
                 />
@@ -147,7 +150,7 @@ export function RegisterScreen({ navigation }: AuthScreenProps<'Register'>) {
                   label="Senha"
                   onBlur={onBlur}
                   onChangeText={onChange}
-                  placeholder="Minimo 8 caracteres"
+                  placeholder="Mínimo 8 caracteres"
                   secureTextEntry
                   textContentType="newPassword"
                   value={value}
@@ -160,7 +163,7 @@ export function RegisterScreen({ navigation }: AuthScreenProps<'Register'>) {
             <View style={styles.actions}>
               <Button label="Criar conta" loading={isSubmitting} onPress={onSubmit} fullWidth />
               <Button
-                label="Ja tenho conta"
+                label="Já tenho conta"
                 onPress={() => navigation.navigate('Login')}
                 variant="ghost"
                 fullWidth

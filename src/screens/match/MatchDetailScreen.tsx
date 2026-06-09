@@ -47,7 +47,7 @@ export function MatchDetailScreen({ route }: Props) {
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.content}>
           <ErrorMessage
-            message="Nao foi possivel carregar esta partida."
+            message="Não foi possível carregar esta partida."
             onRetry={() => {
               refetchMatch();
             }}
@@ -98,7 +98,7 @@ export function MatchDetailScreen({ route }: Props) {
             />
           </View>
           {match.status === 'OPEN' && spotsLeft > 0 ? (
-            <Text style={styles.spots}>{spotsLeft} vagas disponiveis</Text>
+            <Text style={styles.spots}>{spotsLeft} vagas disponíveis</Text>
           ) : null}
         </Card>
 
@@ -120,7 +120,7 @@ export function MatchDetailScreen({ route }: Props) {
 
           {isPlayersError ? (
             <ErrorMessage
-              message="Nao foi possivel carregar os participantes."
+              message="Não foi possível carregar os participantes."
               onRetry={() => {
                 refetchPlayers();
               }}
@@ -131,7 +131,7 @@ export function MatchDetailScreen({ route }: Props) {
             <EmptyState
               icon="people"
               title="Sem confirmados"
-              description="Quando alguem entrar na partida, aparecera aqui."
+              description="Quando alguém entrar na partida, aparecerá aqui."
             />
           ) : null}
 

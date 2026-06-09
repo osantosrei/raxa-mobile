@@ -24,6 +24,7 @@ export function AppTabs() {
           backgroundColor: colors.surface,
           borderTopColor: colors.border,
         },
+        tabBarHideOnKeyboard: true,
       }}
     >
       <Tabs.Screen

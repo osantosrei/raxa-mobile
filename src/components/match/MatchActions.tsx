@@ -45,26 +45,26 @@ export function MatchActions({
   }
 
   function confirmLeave() {
-    Alert.alert('Sair da partida', 'Voce deixara de aparecer na lista de confirmados.', [
+    Alert.alert('Sair da partida', 'Você deixará de aparecer na lista de confirmados.', [
       { text: 'Voltar', style: 'cancel' },
       {
         text: 'Sair',
         style: 'destructive',
         onPress: () => {
-          runAction(() => leaveMatch.mutateAsync(), 'Nao foi possivel sair da partida.');
+          runAction(() => leaveMatch.mutateAsync(), 'Não foi possível sair da partida.');
         },
       },
     ]);
   }
 
   function confirmCancel() {
-    Alert.alert('Cancelar partida', 'Esta acao cancela a partida para todos os jogadores.', [
+    Alert.alert('Cancelar partida', 'Esta ação cancela a partida para todos os jogadores.', [
       { text: 'Voltar', style: 'cancel' },
       {
         text: 'Cancelar partida',
         style: 'destructive',
         onPress: () => {
-          runAction(() => cancelMatch.mutateAsync(match.id), 'Nao foi possivel cancelar a partida.');
+          runAction(() => cancelMatch.mutateAsync(match.id), 'Não foi possível cancelar a partida.');
         },
       },
     ]);
@@ -75,7 +75,7 @@ export function MatchActions({
   }
 
   if (isPast) {
-    return <InfoBanner message="Esta partida ja foi realizada." type="info" />;
+    return <InfoBanner message="Esta partida já foi realizada." type="info" />;
   }
 
   return (
@@ -98,7 +98,7 @@ export function MatchActions({
           label={isFull ? 'Partida cheia' : 'Entrar na partida'}
           loading={joinMatch.isPending}
           onPress={() => {
-            runAction(() => joinMatch.mutateAsync(), 'Nao foi possivel entrar na partida.');
+            runAction(() => joinMatch.mutateAsync(), 'Não foi possível entrar na partida.');
           }}
           fullWidth
         />

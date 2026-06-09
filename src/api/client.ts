@@ -35,7 +35,7 @@ apiClient.interceptors.response.use(
     if (!error.response) {
       const networkError: AppError = {
         status: 0,
-        message: 'Sem conexao com o servidor. Verifique sua internet.',
+        message: 'Sem conexão com o servidor. Verifique sua internet.',
       };
       return Promise.reject(networkError);
     }

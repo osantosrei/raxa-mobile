@@ -77,7 +77,7 @@ export function ProfileScreen() {
       setSuccessMessage('Perfil atualizado.');
     } catch (error) {
       setError('root', {
-        message: getErrorMessage(error, 'Nao foi possivel atualizar o perfil.'),
+        message: getErrorMessage(error, 'Não foi possível atualizar o perfil.'),
       });
     }
   });
@@ -89,11 +89,14 @@ export function ProfileScreen() {
   return (
     <SafeAreaView style={styles.safeArea}>
       <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 24}
         style={styles.keyboard}
       >
         <ScrollView
           contentContainerStyle={styles.content}
+          automaticallyAdjustKeyboardInsets
+          keyboardDismissMode="interactive"
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
@@ -101,7 +104,7 @@ export function ProfileScreen() {
 
           {isError ? (
             <ErrorMessage
-              message="Nao foi possivel sincronizar seu perfil."
+              message="Não foi possível sincronizar seu perfil."
               onRetry={() => {
                 refetch();
               }}
@@ -113,7 +116,7 @@ export function ProfileScreen() {
               <Avatar name={displayUser?.name ?? 'Jogador Raxa'} size={56} />
               <View style={styles.profileText}>
                 <Text style={styles.name}>{displayUser?.name ?? 'Jogador Raxa'}</Text>
-                <Text style={styles.email}>{displayUser?.email ?? 'E-mail indisponivel'}</Text>
+                <Text style={styles.email}>{displayUser?.email ?? 'E-mail indisponível'}</Text>
               </View>
             </View>
 

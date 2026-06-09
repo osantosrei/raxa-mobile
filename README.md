@@ -13,12 +13,12 @@ Aplicativo mobile do Raxa, um app para organizar partidas de futebol amador entr
 
 ## Como rodar
 
-### Pre-requisitos
+### Pré-requisitos
 
 - Node.js 20+
 - Backend `raxa-api` rodando quando as etapas com API forem implementadas
 
-### Instalar dependencias
+### Instalar dependências
 
 ```bash
 npm install
@@ -44,17 +44,17 @@ npx expo start
 ## Etapas implementadas
 
 - Etapa 1: setup Expo, estrutura base, tokens de tema e design system.
-- Etapa 2: navegacao, login, cadastro, JWT persistido com SecureStore e logout.
-- Etapa 3: listagem, criacao e detalhe de partidas com React Query.
-- Etapa 4: participantes confirmados e acoes de entrar, sair e cancelar partida.
-- Etapa 5: convites, deep linking, preview publico, copiar link e compartilhamento nativo.
-- Etapa 6: perfil com visualizacao, edicao de nome/telefone, tratamento de 401 e README.
+- Etapa 2: navegação, login, cadastro, JWT persistido com SecureStore e logout.
+- Etapa 3: listagem, criação e detalhe de partidas com React Query.
+- Etapa 4: participantes confirmados e ações de entrar, sair e cancelar partida.
+- Etapa 5: convites, deep linking, preview público, copiar link e compartilhamento nativo.
+- Etapa 6: perfil com visualização, edição de nome/telefone, tratamento de 401 e README.
 
-## Decisoes tecnicas
+## Decisões técnicas
 
-- Estado global e usado apenas para autenticacao, via Context + SecureStore.
+- Estado global é usado apenas para autenticação, via Context + SecureStore.
 - `App.tsx` envolve o app com `SafeAreaProvider`, `QueryClientProvider` e `AuthProvider`.
 - Os tipos em `src/types/api.ts` espelham os DTOs documentados pelo backend.
 - O `Input` usa `TextInputProps`, sem `any`.
-- Compartilhamento de convites usa `Share` nativo do React Native para texto/link; `expo-sharing` nao foi instalado.
-- Erros 401 limpam SecureStore e sessao em memoria para retornar ao fluxo de autenticacao.
+- Compartilhamento de convites usa `Share` nativo do React Native para texto/link; `expo-sharing` não foi instalado.
+- Erros 401 limpam SecureStore e sessão em memória para retornar ao fluxo de autenticação.
