@@ -16,9 +16,11 @@ import { getErrorMessage } from '../../api/errors';
 import { Button } from '../../components/ui/Button';
 import { ErrorMessage } from '../../components/ui/ErrorMessage';
 import { Input } from '../../components/ui/Input';
-import type { AuthScreenProps } from '../../navigation/types';
+import type { AuthScreenProps, RootStackParamList } from '../../navigation/types';
 import { useAuth } from '../../store/authStore';
+import { consumePendingInvite } from '../../store/pendingInvite';
 import { colors, radii, spacing, typography } from '../../theme';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
 const registerSchema = z.object({
   name: z.string().trim().min(2, 'Nome deve ter ao menos 2 caracteres'),
@@ -50,6 +52,11 @@ export function RegisterScreen({ navigation }: AuthScreenProps<'Register'>) {
         phone: values.phone?.trim() || undefined,
       });
       await signIn(response);
+      const pendingInvite = await consumePendingInvite();
+      const rootNavigation = navigation.getParent<NativeStackNavigationProp<RootStackParamList>>();
+      if (pendingInvite) {
+        rootNavigation?.navigate('InvitePreview', { code: pendingInvite });
+      }
     } catch (error) {
       setError('root', {
         message: getErrorMessage(error, 'Erro ao criar conta. Tente novamente.'),

@@ -2,6 +2,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { LoadingSpinner } from '../components/ui/LoadingSpinner';
+import { InvitePreviewScreen } from '../screens/invite/InvitePreviewScreen';
 import { MatchDetailScreen } from '../screens/match/MatchDetailScreen';
 import { useAuth } from '../store/authStore';
 import { colors } from '../theme';
@@ -27,14 +28,9 @@ export function RootNavigator() {
           headerShown: false,
         }}
       >
-        {token ? (
-          <>
-            <Stack.Screen name="App" component={AppTabs} />
-            <Stack.Screen name="MatchDetail" component={MatchDetailScreen} />
-          </>
-        ) : (
-          <Stack.Screen name="Auth" component={AuthStack} />
-        )}
+        {token ? <Stack.Screen name="App" component={AppTabs} /> : <Stack.Screen name="Auth" component={AuthStack} />}
+        <Stack.Screen name="InvitePreview" component={InvitePreviewScreen} />
+        {token ? <Stack.Screen name="MatchDetail" component={MatchDetailScreen} /> : null}
       </Stack.Navigator>
     </NavigationContainer>
   );
