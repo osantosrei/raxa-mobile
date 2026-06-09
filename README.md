@@ -4,7 +4,7 @@ Aplicativo mobile do Raxa, um app para organizar partidas de futebol amador entr
 
 ## Stack
 
-- React Native + Expo
+- React Native + Expo SDK 54
 - TypeScript
 - React Navigation
 - TanStack React Query
